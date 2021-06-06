@@ -1,9 +1,8 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
-import scripts.hacks.glow
+import scripts.hacks.glow as gl
 import offsets.offsets as vl
-import scripts.hacks.bhop
-import time
+import scripts.hacks.bhop as bh
 import pymem
 import pymem.process
 import sys
@@ -29,8 +28,8 @@ class MainWin(QMainWindow):
     def mainCheat(self):
         while True:
             
-            glow.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex, pm, client)
-            bhop.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
+            gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex, pm, client)
+            bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
 
 try:
     pm = pymem.Pymem("csgo.exe")
