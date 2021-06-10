@@ -11,7 +11,3 @@ def enableBhop(dwForceJump, dwLocalPlayer, m_fFlags, pm, client):
             pm.write_int(force_jump, 5)
             time.sleep(0.08)
             pm.write_int(force_jump, 4)
-
-                
-
-

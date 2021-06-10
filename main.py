@@ -13,6 +13,7 @@ class MainWin(QMainWindow):
     def __init__(self):
 
         self.glval = False
+        self.bhval = False
 
         super().__init__()
 
@@ -26,7 +27,13 @@ class MainWin(QMainWindow):
         self.glbtn = QCheckBox(self)
         self.glbtn.setText("Glow")
         self.glbtn.setChecked(False)
-        self.glbtn.move(10, 50)
+        self.glbtn.move(5, 50)
+        self.glbtn.show()
+
+        self.glbtn = QCheckBox(self)
+        self.glbtn.setText("Bhop")
+        self.glbtn.setChecked(False)
+        self.glbtn.move(5, 80)
         self.glbtn.show()
 
         self.updt = QPushButton(self)
@@ -35,28 +42,35 @@ class MainWin(QMainWindow):
         self.updt.clicked.connect(self.forceUpdate)
 
     def forceUpdate(self):
-        is_updated = False
-        while not is_updated:
+        updated = True
+        while updated:
             self.glval = self.glbtn.isChecked()
-            is_updated = True
-        else:
-            time.sleep(1)
+            self.bhval = self.glbtn.isChecked()
+
+            updated = False
+
+        time.sleep(1)
 
     def mainCheat(self):
         while True:
             if self.glval:
                 gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex,vl.dwLocalPlayer, vl.m_iHealth, pm, client)
-            bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
+            else:
+                pass
+            if self.bhval:
+                bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
+            else:
+                pass
 
-if __name__ == "__main__":
-    try:
-        pm = pymem.Pymem("csgo.exe")
-        client = pymem.process.module_from_name(pm.process_handle, "client.dll" ).lpBaseOfDll
-    except:
-        print("init csgo first")
-        quit()
 
-    ini = QApplication(sys.argv)
-    win = MainWin()
-    Thread(target = win.mainCheat).start()
-    sys.exit(ini.exec_())
+try:
+    pm = pymem.Pymem("csgo.exe")
+    client = pymem.process.module_from_name(pm.process_handle, "client.dll" ).lpBaseOfDll
+except:
+    print("init csgo first")
+    quit()
+
+ini = QApplication(sys.argv)
+win = MainWin()
+Thread(target = win.mainCheat).start()
+sys.exit(ini.exec_())
