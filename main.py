@@ -13,7 +13,7 @@ class MainWin(QMainWindow):
     def __init__(self):
 
         self.glval = False
-        
+
         super().__init__()
 
         self.initUI()
@@ -48,19 +48,15 @@ class MainWin(QMainWindow):
                 gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex,vl.dwLocalPlayer, vl.m_iHealth, pm, client)
             bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
 
-try:
-    pm = pymem.Pymem("csgo.exe")
-    client = pymem.process.module_from_name(pm.process_handle, "client.dll" ).lpBaseOfDll
-except:
-    print("init csgo first")
-    quit()
+if __name__ == "__main__":
+    try:
+        pm = pymem.Pymem("csgo.exe")
+        client = pymem.process.module_from_name(pm.process_handle, "client.dll" ).lpBaseOfDll
+    except:
+        print("init csgo first")
+        quit()
 
-ini = QApplication(sys.argv)
-win = MainWin()
-Thread(target = win.mainCheat).start()
-sys.exit(ini.exec_())
-
-
-# DEPRICATED
-""" Thread(target = glow.enableGlow, args =(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex),).start()
-Thread(target = bhop.enableBhop, args =(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags),).start() """
+    ini = QApplication(sys.argv)
+    win = MainWin()
+    Thread(target = win.mainCheat).start()
+    sys.exit(ini.exec_())
