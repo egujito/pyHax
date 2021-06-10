@@ -30,11 +30,11 @@ class MainWin(QMainWindow):
         self.glbtn.move(5, 50)
         self.glbtn.show()
 
-        self.glbtn = QCheckBox(self)
-        self.glbtn.setText("Bhop")
-        self.glbtn.setChecked(False)
-        self.glbtn.move(5, 80)
-        self.glbtn.show()
+        self.bhbtn = QCheckBox(self)
+        self.bhbtn.setText("Bhop")
+        self.bhbtn.setChecked(False)
+        self.bhbtn.move(5, 80)
+        self.bhbtn.show()
 
         self.updt = QPushButton(self)
         self.updt.setText("Force Update")
@@ -42,12 +42,12 @@ class MainWin(QMainWindow):
         self.updt.clicked.connect(self.forceUpdate)
 
     def forceUpdate(self):
-        updated = True
-        while updated:
+        self.is_updated = False
+        while not self.is_updated:
             self.glval = self.glbtn.isChecked()
-            self.bhval = self.glbtn.isChecked()
+            self.bhval = self.bhbtn.isChecked()
 
-            updated = False
+            self.is_updated = True
 
         time.sleep(1)
 
@@ -55,12 +55,9 @@ class MainWin(QMainWindow):
         while True:
             if self.glval:
                 gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex,vl.dwLocalPlayer, vl.m_iHealth, pm, client)
-            else:
-                pass
             if self.bhval:
                 bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
-            else:
-                pass
+
 
 
 try:
