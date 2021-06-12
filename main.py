@@ -98,6 +98,8 @@ class MainWin(QMainWindow):
         self.glbtn.setChecked(self.config['GLOW'].getboolean('activate'))
         self.bhbtn.setChecked(self.config['MOVEMENT'].getboolean('mode'))
         self.radarbtn.setChecked(self.config['RADAR'].getboolean('activate'))
+        self.fovsl.setValue(self.config['FOV'].getint('value'))
+
 
     # INCREMENTE CHANGES. If you check for buttons state in a main func it will cause problems.
 
