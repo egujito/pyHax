@@ -79,10 +79,10 @@ class MainWin(QMainWindow):
         self.radarbtn.show()
 
         self.antifbtn = QCheckBox(self)
-        self.radarbtn.setText("Force Anti Flash")
-        self.radarbtn.setChecked(False)
-        self.radarbtn.move(120, 50)
-        self.radarbtn.show()
+        self.antifbtn.setText("Force Anti Flash")
+        self.antifbtn.setChecked(False)
+        self.antifbtn.move(120, 50)
+        self.antifbtn.show()
 
         self.updt = QPushButton(self)
         self.updt.setText("Force Update")
@@ -149,6 +149,7 @@ class MainWin(QMainWindow):
                     fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
 
             except:
+
                 print("Waiting for game to start.")
                 time.sleep(1)
                 os.system("cls")
