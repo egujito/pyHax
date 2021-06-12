@@ -1,8 +1,4 @@
 configparser==5.0.2
 Pymem==1.8.4
 PyQt5==5.15.2
-pyqt5-plugins==5.15.2.2.0.1
-PyQt5-Qt==5.15.2
-PyQt5-sip==12.8.1
-pyqt5-tools==5.15.2.3.0.2
 keyboard==0.13.5
