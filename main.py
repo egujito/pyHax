@@ -11,8 +11,10 @@ import offsets.offsets as vl
 import scripts.hacks.bhop as bh
 import scripts.hacks.fov as fov
 import scripts.hacks.radar as radar
+import scripts.hacks.antiflash as fl
 
 # MEMORY OBJECT
+
 import pymem
 import pymem.process
 
@@ -33,6 +35,8 @@ class MainWin(QMainWindow):
         self.glval = False
         self.bhval = False
         self.radarval = False
+        self.antif = False
+
         self.foval = 90
 
         super().__init__()
@@ -74,6 +78,12 @@ class MainWin(QMainWindow):
         self.radarbtn.move(60, 50)
         self.radarbtn.show()
 
+        self.antifbtn = QCheckBox(self)
+        self.radarbtn.setText("Force Anti Flash")
+        self.radarbtn.setChecked(False)
+        self.radarbtn.move(120, 50)
+        self.radarbtn.show()
+
         self.updt = QPushButton(self)
         self.updt.setText("Force Update")
         self.updt.show()
@@ -97,10 +107,13 @@ class MainWin(QMainWindow):
 
         self.glbtn.setChecked(self.config['GLOW'].getboolean('activate'))
         self.bhbtn.setChecked(self.config['MOVEMENT'].getboolean('mode'))
-        self.radarbtn.setChecked(self.config['RADAR'].getboolean('activate'))
-        self.fovsl.setValue(self.config['FOV'].getint('value'))
+        self.radarbtn.setChecked(self.config['MISC'].getboolean('radar'))
+        self.antif.setChecked(self.config['MISC'].getboolean('no_flash'))
 
-    # INCREMENTE CHANGES. If you check for buttons state in a main func it will cause problems.
+        self.fovsl.setValue(self.config['MISC'].getint('fov'))
+
+
+    # INCREMENT CHANGES. If you check for buttons state in a main func it will cause problems.
 
     def forceUpdate(self):
         is_updated = False
@@ -108,6 +121,7 @@ class MainWin(QMainWindow):
             self.glval = self.glbtn.isChecked()
             self.bhval = self.bhbtn.isChecked()
             self.radarval = self.radarbtn.isChecked()
+            self.antif = self.antifbtn.isChecked()
             self.foval = self.fovsl.value()
 
             is_updated = True
@@ -127,6 +141,9 @@ class MainWin(QMainWindow):
 
                 if self.radarval:
                     radar.enableRadar(vl.dwEntityList, vl.m_bSpotted, pm, client)
+
+                if self.antif:
+                    fl.enableAntiFlash(vl.dwLocalPlayer, vl.m_flFlashMaxAlpha, pm, client)
 
                 if self.foval != 90:
                     fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
