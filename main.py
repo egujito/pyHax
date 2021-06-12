@@ -10,10 +10,15 @@ import scripts.hacks.glow as gl
 import offsets.offsets as vl
 import scripts.hacks.bhop as bh
 import scripts.hacks.fov as fov
+import scripts.hacks.radar as radar
 
 # MEMORY OBJECT
 import pymem
 import pymem.process
+
+# CONFIG
+
+import configparser
 
 # MISC
 
@@ -27,13 +32,16 @@ class MainWin(QMainWindow):
 
         self.glval = False
         self.bhval = False
+        self.radarval = False
         self.foval = 90
 
         super().__init__()
 
         self.initUI()
 
+    # GUI def
     def initUI(self):
+
         self.setGeometry(300,300,350,350)
         self.setWindowTitle("PyHax")
         self.show()
@@ -60,40 +68,80 @@ class MainWin(QMainWindow):
         self.fovlabel.move(20, 140)
         self.fovlabel.show()
 
+        self.radarbtn = QCheckBox(self)
+        self.radarbtn.setText("Radar Hack")
+        self.radarbtn.setChecked(False)
+        self.radarbtn.move(60, 50)
+        self.radarbtn.show()
+
         self.updt = QPushButton(self)
         self.updt.setText("Force Update")
         self.updt.show()
         self.updt.clicked.connect(self.forceUpdate)
+
+        self.load = QPushButton(self)
+        self.load.setText("Load CFG")
+        self.load.move(100, 0)
+        self.load.show()
+        self.load.clicked.connect(self.load_cfg)
+
+        self.save = QPushButton(self)
+        self.save.setText("Save Config")
+        self.save.move(200, 0)
+        self.save.show()
+
+    def load_cfg(self):
+        self.raw_cfg = QFileDialog.getOpenFileName(self,'Single File','C:\'','*.ini')
+        self.config = configparser.ConfigParser()
+        self.config.read(self.raw_cfg)
+
+        self.glbtn.setChecked(self.config['GLOW'].getboolean('activate'))
+        self.bhbtn.setChecked(self.config['MOVEMENT'].getboolean('mode'))
+        self.radarbtn.setChecked(self.config['RADAR'].getboolean('activate'))
+
+    # INCREMENTE CHANGES. If you check for buttons state in a main func it will cause problems.
 
     def forceUpdate(self):
         is_updated = False
         while not is_updated:
             self.glval = self.glbtn.isChecked()
             self.bhval = self.bhbtn.isChecked()
+            self.radarval = self.radarbtn.isChecked()
             self.foval = self.fovsl.value()
 
             is_updated = True
 
         time.sleep(1)
 
+    # MAIN CHEAT THREAD
     def mainCheat(self):
         while True:
             if self.glval:
                 gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex,vl.dwLocalPlayer, vl.m_iHealth, pm, client)
+
             if self.bhval:
                 bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
-            fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
+
+            if self.radarval:
+                radar.enableRadar(vl.dwEntityList, vl.m_bSpotted, pm, client)
+
+            if self.foval != 90:
+                fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
 
 
+if __name__ == "__main__":
 
-try:
-    pm = pymem.Pymem("csgo.exe")
-    client = pymem.process.module_from_name(pm.process_handle, "client.dll" ).lpBaseOfDll
-except Exception as e:
-    print(e)
-    quit()
 
-ini = QApplication(sys.argv)
-win = MainWin()
-Thread(target = win.mainCheat).start()
-sys.exit(ini.exec_())
+    # CREATE pymem object
+
+    try:
+        pm = pymem.Pymem("csgo.exe")
+        client = pymem.process.module_from_name(pm.process_handle, "client.dll" ).lpBaseOfDll
+    except Exception as e:
+        print(e)
+        quit()
+
+    ini = QApplication(sys.argv)
+    win = MainWin()
+    Thread(target = win.mainCheat).start()
+    sys.exit(ini.exec_())
