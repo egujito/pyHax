@@ -25,7 +25,7 @@ import configparser
 import sys
 from threading import Thread
 import time
-
+import os
 
 class MainWin(QMainWindow):
     def __init__(self):
@@ -100,7 +100,6 @@ class MainWin(QMainWindow):
         self.radarbtn.setChecked(self.config['RADAR'].getboolean('activate'))
         self.fovsl.setValue(self.config['FOV'].getint('value'))
 
-
     # INCREMENTE CHANGES. If you check for buttons state in a main func it will cause problems.
 
     def forceUpdate(self):
@@ -118,21 +117,33 @@ class MainWin(QMainWindow):
     # MAIN CHEAT THREAD
     def mainCheat(self):
         while True:
-            if self.glval:
-                gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex,vl.dwLocalPlayer, vl.m_iHealth, pm, client)
+            try:
 
-            if self.bhval:
-                bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
+                if self.glval:
+                    gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex,vl.dwLocalPlayer, vl.m_iHealth, pm, client)
 
-            if self.radarval:
-                radar.enableRadar(vl.dwEntityList, vl.m_bSpotted, pm, client)
+                if self.bhval:
+                    bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
 
-            if self.foval != 90:
-                fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
+                if self.radarval:
+                    radar.enableRadar(vl.dwEntityList, vl.m_bSpotted, pm, client)
+
+                if self.foval != 90:
+                    fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
+
+            except:
+                print("Waiting for game to start.")
+                time.sleep(1)
+                os.system("cls")
+                print("Waiting for game to start..")
+                time.sleep(1)
+                os.system("cls")
+                print("Waiting for game to start...")
+                time.sleep(1)
+                os.system("cls")
 
 
 if __name__ == "__main__":
-
 
     # CREATE pymem object
 
