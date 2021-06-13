@@ -81,7 +81,7 @@ class MainWin(QMainWindow):
         self.antifbtn = QCheckBox(self)
         self.antifbtn.setText("Force Anti Flash")
         self.antifbtn.setChecked(False)
-        self.antifbtn.move(120, 50)
+        self.antifbtn.move(150, 50)
         self.antifbtn.show()
 
         self.updt = QPushButton(self)
