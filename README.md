@@ -15,6 +15,15 @@ This is a python cheat I made for csgo, using pymem
 
 ⟶ BHOP
 
+
+⟶ Skin Changer
+
+# SKIN CHANGER
+
+skin changer is really bipolar and doesnt work all the time
+
+![](https://github.com/saiko-2043/pyHax/blob/master/.github/unknown.png)
+
 # Requirements
 
 ```
@@ -30,9 +39,6 @@ keyboard==0.13.5
 
 
 ⟶ Config browser
-
-
-⟶ Skin Changer
 
 
 ⟶ Anti FLash
