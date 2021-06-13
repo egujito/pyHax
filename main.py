@@ -12,6 +12,7 @@ import scripts.hacks.bhop as bh
 import scripts.hacks.fov as fov
 import scripts.hacks.radar as radar
 import scripts.hacks.antiflash as fl
+import scripts.hacks.skinchanger as sk
 
 # MEMORY OBJECT
 
@@ -36,6 +37,7 @@ class MainWin(QMainWindow):
         self.bhval = False
         self.radarval = False
         self.antif = False
+        self.skins = False
 
         self.foval = 90
 
@@ -84,6 +86,12 @@ class MainWin(QMainWindow):
         self.antifbtn.move(150, 50)
         self.antifbtn.show()
 
+        self.skinb = QCheckBox(self)
+        self.skinb.setText("Enable SKin Changer")
+        self.skinb.setChecked(False)
+        self.skinb.move(150, 80)
+        self.skinb.show()
+
         self.updt = QPushButton(self)
         self.updt.setText("Force Update")
         self.updt.show()
@@ -108,7 +116,8 @@ class MainWin(QMainWindow):
         self.glbtn.setChecked(self.config['GLOW'].getboolean('activate'))
         self.bhbtn.setChecked(self.config['MOVEMENT'].getboolean('mode'))
         self.radarbtn.setChecked(self.config['MISC'].getboolean('radar'))
-        self.antif.setChecked(self.config['MISC'].getboolean('no_flash'))
+        self.antifbtn.setChecked(self.config['MISC'].getboolean('no_flash'))
+        self.skinb.setChecked(self.config['SKINS'].getboolean('enable'))
 
         self.fovsl.setValue(self.config['MISC'].getint('fov'))
 
@@ -122,6 +131,7 @@ class MainWin(QMainWindow):
             self.bhval = self.bhbtn.isChecked()
             self.radarval = self.radarbtn.isChecked()
             self.antif = self.antifbtn.isChecked()
+            self.skins = self.skinb.isChecked()
             self.foval = self.fovsl.value()
 
             is_updated = True
@@ -131,34 +141,25 @@ class MainWin(QMainWindow):
     # MAIN CHEAT THREAD
     def mainCheat(self):
         while True:
-            try:
 
-                if self.glval:
-                    gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex,vl.dwLocalPlayer, vl.m_iHealth, pm, client)
 
-                if self.bhval:
-                    bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
+            if self.glval:
+                gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex,vl.dwLocalPlayer, vl.m_iHealth, pm, client)
 
-                if self.radarval:
-                    radar.enableRadar(vl.dwEntityList, vl.m_bSpotted, pm, client)
+            if self.bhval:
+                bh.enableBhop(vl.dwForceJump, vl.dwLocalPlayer, vl.m_fFlags, pm, client)
 
-                if self.antif:
-                    fl.enableAntiFlash(vl.dwLocalPlayer, vl.m_flFlashMaxAlpha, pm, client)
+            if self.radarval:
+                radar.enableRadar(vl.dwEntityList, vl.m_bSpotted, pm, client)
 
-                if self.foval != 90:
-                    fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
+            if self.antif:
+                fl.enableAntiFlash(vl.dwLocalPlayer, vl.m_flFlashMaxAlpha, pm, client)
 
-            except:
+            if self.skins:
+                sk.change_skin(vl.dwLocalPlayer, vl.dwClientState, vl.m_hMyWeapons, vl.dwEntityList, vl.m_iItemDefinitionIndex, vl.m_OriginalOwnerXuidLow, vl.m_iItemIDHigh, vl.m_nFallbackPaintKit, vl.m_iAccountID, vl.m_nFallbackStatTrak, vl.m_nFallbackSeed, vl.m_flFallbackWear, pm, client, engine)
 
-                print("Waiting for game to start.")
-                time.sleep(1)
-                os.system("cls")
-                print("Waiting for game to start..")
-                time.sleep(1)
-                os.system("cls")
-                print("Waiting for game to start...")
-                time.sleep(1)
-                os.system("cls")
+            if self.foval != 90:
+                fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
 
 
 if __name__ == "__main__":
@@ -168,6 +169,7 @@ if __name__ == "__main__":
     try:
         pm = pymem.Pymem("csgo.exe")
         client = pymem.process.module_from_name(pm.process_handle, "client.dll" ).lpBaseOfDll
+        engine = pymem.process.module_from_name(pm.process_handle, "engine.dll").lpBaseOfDll
     except Exception as e:
         print(e)
         quit()
