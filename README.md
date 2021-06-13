@@ -18,6 +18,9 @@ This is a python cheat I made for csgo, using pymem
 
 ⟶ Skin Changer
 
+
+⟶ Anti FLash
+
 # SKIN CHANGER
 
 skin changer is really bipolar and doesnt work all the time
@@ -39,9 +42,6 @@ keyboard==0.13.5
 
 
 ⟶ Config browser
-
-
-⟶ Anti FLash
 
 
 ⟶ Aimbot
