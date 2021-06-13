@@ -45,6 +45,3 @@ keyboard==0.13.5
 
 
 ⟶ Aimbot
-
-
-⟶ Finish Config struct
