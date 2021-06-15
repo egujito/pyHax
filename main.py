@@ -29,6 +29,8 @@ import sys
 from threading import Thread
 import time
 import os
+import colorama
+from colorama import Fore, Back, Style
 
 class MainWin(QMainWindow):
     def __init__(self):
@@ -156,7 +158,7 @@ class MainWin(QMainWindow):
                 fl.enableAntiFlash(vl.dwLocalPlayer, vl.m_flFlashMaxAlpha, pm, client)
 
             if self.skins:
-                sk.change_skin(vl.dwLocalPlayer, vl.dwClientState, vl.m_hMyWeapons, vl.dwEntityList, vl.m_iItemDefinitionIndex, vl.m_OriginalOwnerXuidLow, vl.m_iItemIDHigh, vl.m_nFallbackPaintKit, vl.m_iAccountID, vl.m_nFallbackStatTrak, vl.m_nFallbackSeed, vl.m_flFallbackWear, pm, client, engine)
+                change_skin(vl.dwLocalPlayer, vl.dwClientState, vl.m_hMyWeapons,dwEntityList, vl.m_iItemDefinitionIndex, vl.m_OriginalOwnerXuidLow, vl.m_iItemIDHigh, vl.m_nFallbackPaintKit, vl.m_iAccountID, vl.m_nFallbackStatTrak, vl.m_nFallbackSeed, vl.m_flFallbackWear, pm, client, engine):
 
             if self.foval != 90:
                 fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
@@ -166,15 +168,34 @@ if __name__ == "__main__":
 
     # CREATE pymem object
 
+    os.system('TITLE debugging pyhax')
+    os.system("cls")
+
+
+
     try:
+        print("[ " + Fore.YELLOW + "WARNING" '\033[39m' + " ]" + " Finding Process 'csgo.exe'")
         pm = pymem.Pymem("csgo.exe")
+        print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " Process found")
+        print("[ " + Fore.YELLOW + "WARNING" '\033[39m' + " ]" + " reading client.dll")
         client = pymem.process.module_from_name(pm.process_handle, "client.dll" ).lpBaseOfDll
+        print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " dll read successfuly")
+        print("[ " + Fore.YELLOW + "WARNING" '\033[39m' + " ]" + " reading engine.dll")
         engine = pymem.process.module_from_name(pm.process_handle, "engine.dll").lpBaseOfDll
+        print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " engine.dll read successfuly")
+        print("[ " + Fore.CYAN + "INIT" '\033[39m' + " ]" + " Mounting GUI")
+        time.sleep(1)
+
     except Exception as e:
+        print("[ " + Fore.RED + "ERROR" '\033[39m' + " ]" + " 'csgo.exe': Process not found")
         print(e)
         quit()
 
     ini = QApplication(sys.argv)
     win = MainWin()
+    print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " GUI mounted")
+    print("[ " + Fore.YELLOW + "WARNING" '\033[39m' + " ]" + " starting mainCheat() thread")
+    time.sleep(1)
     Thread(target = win.mainCheat).start()
+    print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " Thread started")
     sys.exit(ini.exec_())

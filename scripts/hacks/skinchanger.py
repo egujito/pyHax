@@ -1,5 +1,7 @@
 import configparser
 import keyboard
+import colorama
+from colorama import Fore, Back, Style
 
 def change_skin(dwLocalPlayer, dwClientState, m_hMyWeapons,dwEntityList, m_iItemDefinitionIndex,m_OriginalOwnerXuidLow, m_iItemIDHigh,m_nFallbackPaintKit, m_iAccountID,m_nFallbackStatTrak, m_nFallbackSeed,m_flFallbackWear, pm, client, engine):
 
@@ -43,100 +45,104 @@ def change_skin(dwLocalPlayer, dwClientState, m_hMyWeapons,dwEntityList, m_iItem
     engine_state = pm.read_int( engine + dwClientState )
     local_player = pm.read_int( client + dwLocalPlayer )
 
-    for i in range( 0, 8 ):
-        my_weapons = pm.read_int( local_player + m_hMyWeapons + (i - 1) * 0x4 ) & 0xFFF
-        weapon_address = pm.read_int( client + dwEntityList + (my_weapons - 1) * 0x10 )
-        if weapon_address:
-            weapon_id = pm.read_short( weapon_address + m_iItemDefinitionIndex )
+    if local_player:
+        for i in range( 0, 8 ):
+            my_weapons = pm.read_int( local_player + m_hMyWeapons + (i - 1) * 0x4 ) & 0xFFF
+            weapon_address = pm.read_int( client + dwEntityList + (my_weapons - 1) * 0x10 )
+            if weapon_address:
+                weapon_id = pm.read_short( weapon_address + m_iItemDefinitionIndex )
 
 
-            weapon_owner = pm.read_int( weapon_address + m_OriginalOwnerXuidLow )
-            seed = 420
-            if weapon_id == 7:
-                fallbackpaint = akpaint
-                seed = 661
-            elif weapon_id == 9:
-                fallbackpaint = awppaint
+                weapon_owner = pm.read_int( weapon_address + m_OriginalOwnerXuidLow )
                 seed = 420
-            elif weapon_id == 61:
-                fallbackpaint = usppaint
-                seed = 420
-            elif weapon_id == 1:
-                fallbackpaint = deaglepaint
-                seed = 420
-            elif weapon_id == 4:
-                fallbackpaint = glockpaint
-                seed = 420
-            elif weapon_id == 3:
-                fallbackpaint = fivepaint
-                seed = 420
-            elif weapon_id == 36:
-                fallbackpaint = ppaint
-                seed = 420
-            elif weapon_id == 30:
-                fallbackpaint = tecpaint
-                seed = 420
-            elif weapon_id == 16:
-                fallbackpaint = mapaint
-            elif weapon_id == 60:
-                fallbackpaint = mspaint
-            elif weapon_id == 13:
-                fallbackpaint = galilpaint
-            elif weapon_id == 10:
-                fallbackpaint = famaspaint
-            elif weapon_id == 8:
-                fallbackpaint = augpaint
-            elif weapon_id == 39:
-                fallbackpaint = sgpaint
-            elif weapon_id == 40:
-                fallbackpaint = scoutpaint
-            elif weapon_id == 17:
-                fallbackpaint = macpaint
-            elif weapon_id == 33:
-                fallbackpaint = mpsevpaint
-            elif weapon_id == 34:
-                fallbackpaint = mpninpaint
-            elif weapon_id == 26:
-                fallbackpaint = pppaint
-            elif weapon_id == 19:
-                fallbackpaint = pneunpaint
-            elif weapon_id == 24:
-                fallbackpaint = umppaint
-            elif weapon_id == 27:
-                fallbackpaint = magpaint
-            elif weapon_id == 35:
-                fallbackpaint = novpaint
-            elif weapon_id == 29:
-                fallbackpaint = sawpaint
-            elif weapon_id == 25:
-                fallbackpaint = xmpaint
-            elif weapon_id == 64:
-                fallbackpaint = revolverpaint
-            elif weapon_id == 63:
-                fallbackpaint = czpaint
-            elif weapon_id == 2:
-                fallbackpaint = dualiespaint
-            elif weapon_id == 32:
-                fallbackpaint = p2000paint
-            elif weapon_id == 23:
-                fallbackpaint = mp5paint
-            elif weapon_id == 28:
-                fallbackpaint = negevpaint
-            elif weapon_id == 14:
-                fallbackpaint = m249paint
-            elif weapon_id == 11:
-                fallbackpaint = g3sg1paint
-            elif weapon_id == 38:
-                fallbackpaint = scarpaint
-            else: # MEANS PLAYER IS DEAD
-                continue
+                if weapon_id == 7:
+                    fallbackpaint = akpaint
+                    seed = 661
+                elif weapon_id == 9:
+                    fallbackpaint = awppaint
+                    seed = 420
+                elif weapon_id == 61:
+                    fallbackpaint = usppaint
+                    seed = 420
+                elif weapon_id == 1:
+                    fallbackpaint = deaglepaint
+                    seed = 420
+                elif weapon_id == 4:
+                    fallbackpaint = glockpaint
+                    seed = 420
+                elif weapon_id == 3:
+                    fallbackpaint = fivepaint
+                    seed = 420
+                elif weapon_id == 36:
+                    fallbackpaint = ppaint
+                    seed = 420
+                elif weapon_id == 30:
+                    fallbackpaint = tecpaint
+                    seed = 420
+                elif weapon_id == 16:
+                    fallbackpaint = mapaint
+                elif weapon_id == 60:
+                    fallbackpaint = mspaint
+                elif weapon_id == 13:
+                    fallbackpaint = galilpaint
+                elif weapon_id == 10:
+                    fallbackpaint = famaspaint
+                elif weapon_id == 8:
+                    fallbackpaint = augpaint
+                elif weapon_id == 39:
+                    fallbackpaint = sgpaint
+                elif weapon_id == 40:
+                    fallbackpaint = scoutpaint
+                elif weapon_id == 17:
+                    fallbackpaint = macpaint
+                elif weapon_id == 33:
+                    fallbackpaint = mpsevpaint
+                elif weapon_id == 34:
+                    fallbackpaint = mpninpaint
+                elif weapon_id == 26:
+                    fallbackpaint = pppaint
+                elif weapon_id == 19:
+                    fallbackpaint = pneunpaint
+                elif weapon_id == 24:
+                    fallbackpaint = umppaint
+                elif weapon_id == 27:
+                    fallbackpaint = magpaint
+                elif weapon_id == 35:
+                    fallbackpaint = novpaint
+                elif weapon_id == 29:
+                    fallbackpaint = sawpaint
+                elif weapon_id == 25:
+                    fallbackpaint = xmpaint
+                elif weapon_id == 64:
+                    fallbackpaint = revolverpaint
+                elif weapon_id == 63:
+                    fallbackpaint = czpaint
+                elif weapon_id == 2:
+                    fallbackpaint = dualiespaint
+                elif weapon_id == 32:
+                    fallbackpaint = p2000paint
+                elif weapon_id == 23:
+                    fallbackpaint = mp5paint
+                elif weapon_id == 28:
+                    fallbackpaint = negevpaint
+                elif weapon_id == 14:
+                    fallbackpaint = m249paint
+                elif weapon_id == 11:
+                    fallbackpaint = g3sg1paint
+                elif weapon_id == 38:
+                    fallbackpaint = scarpaint
+                else: # MEANS PLAYER IS DEAD
+                    continue
 
-            pm.write_int( weapon_address + m_iItemIDHigh, -1 )
-            pm.write_int( weapon_address + m_nFallbackPaintKit, fallbackpaint )
-            pm.write_int( weapon_address + m_iAccountID, weapon_owner )
-            pm.write_int( weapon_address + m_nFallbackStatTrak, 42069 )
-            pm.write_int( weapon_address + m_nFallbackSeed, seed )
-            pm.write_float( weapon_address + m_flFallbackWear, float( 0.000001 ) )
+                pm.write_int( weapon_address + m_iItemIDHigh, -1 )
+                pm.write_int( weapon_address + m_nFallbackPaintKit, fallbackpaint )
+                pm.write_int( weapon_address + m_iAccountID, weapon_owner )
+                pm.write_int( weapon_address + m_nFallbackStatTrak, 42069 )
+                pm.write_int( weapon_address + m_nFallbackSeed, seed )
+                pm.write_float( weapon_address + m_flFallbackWear, float( 0.000001 ) )
+
+        else:
+            print("[ " + Fore.YELLOW + "WARNING" '\033[39m' + " ]" + " local_player not found")
 
         if keyboard.is_pressed( "f6" ):
             pm.write_int( engine_state + 0x174, -1 )
