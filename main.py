@@ -134,6 +134,8 @@ class MainWin(QMainWindow):
             self.radarval = self.radarbtn.isChecked()
             self.antif = self.antifbtn.isChecked()
             self.skins = self.skinb.isChecked()
+            engine_state = pm.read_int( engine + vl.dwClientState )
+            pm.write_int( engine_state + 0x174, -1 )
             self.foval = self.fovsl.value()
 
             is_updated = True
