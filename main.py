@@ -129,13 +129,24 @@ class MainWin(QMainWindow):
     def forceUpdate(self):
         is_updated = False
         while not is_updated:
+            print("[ " + Fore.YELLOW + " INFO " '\033[39m' + " ]" + " updating all checkboxes, sliders, buttons values.")
             self.glval = self.glbtn.isChecked()
             self.bhval = self.bhbtn.isChecked()
             self.radarval = self.radarbtn.isChecked()
             self.antif = self.antifbtn.isChecked()
             self.skins = self.skinb.isChecked()
+            print("[ " + Fore.YELLOW + " INFO " '\033[39m' + " ]" + " Looking for engine state to force update it")
             engine_state = pm.read_int( engine + vl.dwClientState )
+            print("[ " + Fore.YELLOW + " WARNING " '\033[39m' + " ]" + " Updating the engine now")
             pm.write_int( engine_state + 0x174, -1 )
+            print("[ " + Fore.GREEN + " OK " '\033[39m' + " ]" + " Fully updated engine now.")
+            print("[ " + Fore.BLUE + " CHANGES " '\033[39m' + " ]")
+            print(" Glow value -------> ", self.glval)
+            print(" Bhop value -------> " , self.bhval)
+            print(" Radar value -------> " , self.radarval)
+            print(" Anti flash value -------> " , self.antif)
+            print(" FOV value -------> ", self.foval)
+            print(" Skin changer -------> ", self.skins)
             self.foval = self.fovsl.value()
             is_updated = True
 
@@ -144,7 +155,6 @@ class MainWin(QMainWindow):
     # MAIN CHEAT THREAD
     def mainCheat(self):
         while True:
-
 
             if self.glval:
                 gl.enableGlow(vl.dwGlowObjectManager, vl.dwEntityList, vl.m_iTeamNum, vl.m_iGlowIndex,vl.dwLocalPlayer, vl.m_iHealth, pm, client)
@@ -170,7 +180,6 @@ if __name__ == "__main__":
 
     os.system('TITLE debugging pyhax')
     os.system("cls")
-
 
 
     try:
