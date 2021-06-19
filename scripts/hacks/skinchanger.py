@@ -141,5 +141,5 @@ def change_skin(dwLocalPlayer, dwClientState, m_hMyWeapons,dwEntityList, m_iItem
             pm.write_float( weapon_address + m_flFallbackWear, float( 0.000001 ) )
 
 
-        if keyboard.is_pressed( "f6" ):
-            pm.write_int( engine_state + 0x174, -1 )
+        #if keyboard.is_pressed( "f6" ):
+            #pm.write_int( engine_state + 0x174, -1 )
