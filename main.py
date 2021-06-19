@@ -137,7 +137,6 @@ class MainWin(QMainWindow):
             engine_state = pm.read_int( engine + vl.dwClientState )
             pm.write_int( engine_state + 0x174, -1 )
             self.foval = self.fovsl.value()
-
             is_updated = True
 
         time.sleep(1)
@@ -162,8 +161,7 @@ class MainWin(QMainWindow):
             if self.skins:
                 sk.change_skin(vl.dwLocalPlayer, vl.dwClientState, vl.m_hMyWeapons, vl.dwEntityList, vl.m_iItemDefinitionIndex, vl.m_OriginalOwnerXuidLow, vl.m_iItemIDHigh, vl.m_nFallbackPaintKit, vl.m_iAccountID, vl.m_nFallbackStatTrak, vl.m_nFallbackSeed, vl.m_flFallbackWear, pm, client, engine)
 
-            if self.foval != 90:
-                fov.changeFov(vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
+            fov.changeFov(vl.dwLocalPlayer, vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
 
 
 if __name__ == "__main__":
@@ -176,21 +174,20 @@ if __name__ == "__main__":
 
 
     try:
-        print("[ " + Fore.YELLOW + "WARNING" '\033[39m' + " ]" + " Finding Process 'csgo.exe'")
+        print("[ " + Fore.YELLOW + "INFO" '\033[39m' + " ]" + " Finding Process 'csgo.exe'")
         pm = pymem.Pymem("csgo.exe")
         print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " Process found")
-        print("[ " + Fore.YELLOW + "WARNING" '\033[39m' + " ]" + " reading client.dll")
+        print("[ " + Fore.YELLOW + "INFO" '\033[39m' + " ]" + " reading client.dll")
         client = pymem.process.module_from_name(pm.process_handle, "client.dll" ).lpBaseOfDll
         print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " dll read successfuly")
-        print("[ " + Fore.YELLOW + "WARNING" '\033[39m' + " ]" + " reading engine.dll")
+        print("[ " + Fore.YELLOW + "INFO" '\033[39m' + " ]" + " reading engine.dll")
         engine = pymem.process.module_from_name(pm.process_handle, "engine.dll").lpBaseOfDll
         print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " engine.dll read successfuly")
         print("[ " + Fore.CYAN + "INIT" '\033[39m' + " ]" + " Mounting GUI")
         time.sleep(1)
 
     except Exception as e:
-        print("[ " + Fore.RED + "ERROR" '\033[39m' + " ]" + " 'csgo.exe': Process not found")
-        print(e)
+        print("[ " + Fore.RED + "ERROR" '\033[39m' + " ] ", e)
         quit()
 
     ini = QApplication(sys.argv)
