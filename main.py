@@ -13,6 +13,7 @@ import scripts.hacks.fov as fov
 import scripts.hacks.radar as radar
 import scripts.hacks.antiflash as fl
 import scripts.hacks.skinchanger as sk
+import scripts.hacks.thirdperson as tp
 
 # MEMORY OBJECT
 
@@ -40,6 +41,8 @@ class MainWin(QMainWindow):
         self.radarval = False
         self.antif = False
         self.skins = False
+        self.tpbind = None
+        self.is_observer = False
 
         self.foval = 90
 
@@ -110,6 +113,16 @@ class MainWin(QMainWindow):
         self.save.move(200, 0)
         self.save.show()
 
+        self.thirdbind = QLineEdit(self)
+        self.thirdbind.move(5, 200)
+        self.thirdbind.resize(20, 20)
+        self.thirdbind.show()
+
+        self.thirdLabel = QLabel(self)
+        self.thirdLabel.setText("Third person keybind")
+        self.thirdLabel.move(5, 220)
+        self.thirdLabel.show()
+
     def load_cfg(self):
         self.raw_cfg = QFileDialog.getOpenFileName(self,'Single File','C:\'','*.ini')
         self.config = configparser.ConfigParser()
@@ -135,6 +148,7 @@ class MainWin(QMainWindow):
             self.radarval = self.radarbtn.isChecked()
             self.antif = self.antifbtn.isChecked()
             self.skins = self.skinb.isChecked()
+            self.tpbind = self.thirdbind.text()
             print("[ " + Fore.YELLOW + " INFO " '\033[39m' + " ]" + " Looking for engine state to force update it")
             engine_state = pm.read_int( engine + vl.dwClientState )
             print("[ " + Fore.YELLOW + " WARNING " '\033[39m' + " ]" + " Updating the engine now")
@@ -170,6 +184,10 @@ class MainWin(QMainWindow):
 
             if self.skins:
                 sk.change_skin(vl.dwLocalPlayer, vl.dwClientState, vl.m_hMyWeapons, vl.dwEntityList, vl.m_iItemDefinitionIndex, vl.m_OriginalOwnerXuidLow, vl.m_iItemIDHigh, vl.m_nFallbackPaintKit, vl.m_iAccountID, vl.m_nFallbackStatTrak, vl.m_nFallbackSeed, vl.m_flFallbackWear, pm, client, engine)
+
+            if self.tpbind != None:
+                tp.checkThirdPerson(vl.m_iObserverMode, vl.dwLocalPlayer, vl.m_iFOV, pm, client, self.tpbind, self.is_observer)
+
 
             fov.changeFov(vl.dwLocalPlayer, vl.dwEntityList, vl.m_iFOV, self.foval, pm, client)
 
