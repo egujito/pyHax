@@ -35,7 +35,6 @@ Pymem==1.8.4
 PyQt5==5.15.2
 keyboard==0.13.5
 pyinstaller==4.2
-
 ```
 
 # TODO
