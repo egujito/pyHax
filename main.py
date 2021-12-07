@@ -196,7 +196,7 @@ if __name__ == "__main__":
 
     # CREATE pymem object
 
-    os.system('TITLE debugging pyhax')
+    os.system('pyhax console')
     os.system("cls")
 
 
@@ -210,8 +210,7 @@ if __name__ == "__main__":
         print("[ " + Fore.YELLOW + "INFO" '\033[39m' + " ]" + " reading engine.dll")
         engine = pymem.process.module_from_name(pm.process_handle, "engine.dll").lpBaseOfDll
         print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " engine.dll read successfuly")
-        print("[ " + Fore.CYAN + "INIT" '\033[39m' + " ]" + " Mounting GUI")
-        time.sleep(1)
+        print("[ " + Fore.CYAN + "INIT" '\033[39m' + " ]" + "Initializing GUI")
 
     except Exception as e:
         print("[ " + Fore.RED + "ERROR" '\033[39m' + " ] ", e)
@@ -221,7 +220,6 @@ if __name__ == "__main__":
     win = MainWin()
     print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " GUI mounted")
     print("[ " + Fore.YELLOW + "WARNING" '\033[39m' + " ]" + " starting mainCheat() thread")
-    time.sleep(1)
     Thread(target = win.mainCheat).start()
     print("[ " + Fore.GREEN + "OK" '\033[39m' + " ]" + " Thread started")
     sys.exit(ini.exec_())
